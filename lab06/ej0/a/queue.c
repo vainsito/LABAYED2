@@ -6,9 +6,7 @@
 #include "queue.h"
 
 struct s_queue {
-    /*
-     * COMPLETAR
-     */
+    size_t size; // Agrego un contador para la cantidad de elementos para que sea orden constante
     struct s_node *first;
 };
 
@@ -42,10 +40,8 @@ invrep(queue q) {
 
 queue queue_empty(void) {
     queue q=NULL;
-    /*
-     * COMPLETAR
-     *
-     */
+    q->first = NULL;
+    q->size = 0;
     assert(invrep(q) && queue_is_empty(q));
     return q;
 }
@@ -56,10 +52,12 @@ queue queue_enqueue(queue q, queue_elem e) {
     if (q->first==NULL) {
         q->first = new_node;
     } else {
-        /*
-         * COMPLETAR
-         *
-         */
+        while (q->first != NULL)
+        {
+            q->first = q->first->next; // Avanzo hasta el ultimo elemento
+        }
+        q->first->next = new_node;  // Agrego el nuevo elemento al final
+        q->size++;  // Incremento el size de la cola
     }
     assert(invrep(q) && !queue_is_empty(q) && queue_first(q) == e);
     return q;
@@ -76,11 +74,7 @@ queue_elem queue_first(queue q) {
 }
 unsigned int queue_size(queue q) {
     assert(invrep(q));
-    unsigned int size=0;
-    /*
-     * COMPLETAR
-     *
-     */
+    unsigned int size= q->size; // Devuelvo el size de la cola
     return size;
 }
 
