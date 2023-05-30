@@ -6,7 +6,7 @@
 #include "queue.h"
 
 struct s_queue {
-    size_t size; // Agrego un contador para la cantidad de elementos para que sea orden constante
+    unsigned int size; // Agrego un contador para la cantidad de elementos para que sea orden constante
     struct s_node *first;
 };
 
@@ -40,26 +40,26 @@ invrep(queue q) {
 
 queue queue_empty(void) {
     queue q=NULL;
+    q = malloc(sizeof(struct s_queue));
     q->first = NULL;
     q->size = 0;
     assert(invrep(q) && queue_is_empty(q));
     return q;
 }
-
 queue queue_enqueue(queue q, queue_elem e) {
     assert(invrep(q));
     struct s_node *new_node = create_node(e);
+    q->size++; // Incremento el contador de elementos
     if (q->first==NULL) {
         q->first = new_node;
     } else {
-        while (q->first != NULL)
-        {
-            q->first = q->first->next; // Avanzo hasta el ultimo elemento
+        struct s_node *p = q->first; // Agrego un puntero para recorrer la lista y llegar al final
+        while(p->next != NULL){
+            p = p->next; // Incremento el contador de elementos  
         }
-        q->first->next = new_node;  // Agrego el nuevo elemento al final
-        q->size++;  // Incremento el size de la cola
+        p->next = new_node;  // Agrego el nuevo nodo al final de la lista
     }
-    assert(invrep(q) && !queue_is_empty(q) && queue_first(q) == e);
+    assert(invrep(q) && !queue_is_empty(q));
     return q;
 }
 
@@ -74,8 +74,7 @@ queue_elem queue_first(queue q) {
 }
 unsigned int queue_size(queue q) {
     assert(invrep(q));
-    unsigned int size= q->size; // Devuelvo el size de la cola
-    return size;
+    return q->size;
 }
 
 queue queue_dequeue(queue q) {

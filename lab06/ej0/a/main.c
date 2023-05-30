@@ -49,10 +49,8 @@ int main(int argc, char *argv[]) {
 
     /* parse the filepath given in command line arguments */
     filepath = parse_filepath(argc, argv);
-    
     // parse the file and returns the loaded queue
     queue q=queue_from_file(filepath);
-    
     /*dumping the queue */
     printf("length: %u\n", queue_size(q));
     queue_dump(q, stdout);
@@ -60,6 +58,7 @@ int main(int argc, char *argv[]) {
     // 
     // COMPLETAR: Liberar la memoria usada por <q>
     //
+    queue_destroy(q);
     return EXIT_SUCCESS;
 }
 
